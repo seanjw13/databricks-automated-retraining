@@ -1,0 +1,34 @@
+# This GitHub workflow deploys Bundle assets (ML asset config and more)
+# defined under automated_retraining/assets/*
+# and automated_retraining/databricks.yml with prod deployment target configs,
+# when PRs are merged into the release branch
+name: Bundle Deployment for automated-retraining Prod
+
+on:
+  push:
+    branches:
+      - 'release'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: ./automated_retraining
+
+env:
+  DATABRICKS_TOKEN: ${{ secrets.PROD_WORKSPACE_TOKEN }}
+
+jobs:
+  prod:
+    concurrency: automated-retraining-prod-bundle-job
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: databricks/setup-cli@v0.210.1
+      - name: Validate Bundle For Prod
+        id: validate
+        run: |
+          databricks bundle validate -t prod
+      - name: Deploy Bundle to Prod
+        id: deploy
+        run: |
+          databricks bundle deploy -t prod
