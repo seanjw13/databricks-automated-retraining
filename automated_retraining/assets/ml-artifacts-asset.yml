@@ -41,7 +41,7 @@ grants: &grants
   grants:
     - privileges:
         - EXECUTE
-      principal: admins
+      principal: ADMINS
 
 # Defines model and experiments
 resources:
