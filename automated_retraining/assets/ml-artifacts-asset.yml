@@ -34,7 +34,7 @@ targets:
 common_permissions: &permissions
   permissions:
     - level: CAN_READ
-      group_name: account users
+      group_name: users
 
 # Allow users to execute models in Unity Catalog
 grants: &grants
